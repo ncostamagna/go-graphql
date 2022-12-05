@@ -10,7 +10,9 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"strings"
 
+	"github.com/99designs/gqlgen/graphql"
 	"github.com/ncostamagna/go-graphql/internal/model"
 )
 
@@ -60,12 +62,21 @@ func (r *mutationResolver) StoreUser(ctx context.Context, input model.NewUser) (
 // Todos is the resolver for the todos field.
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
 	r.Resolver.Service.Print()
+	preloads := GetPreloads(ctx)
+	fmt.Println(preloads)
+	for _, v := range preloads {
+		if strings.HasPrefix(v, "user.") {
+			fmt.Println(strings.Join(strings.Split(v, ".")[1:], "."))
+		}
+	}
 	return r.todos, nil
 }
 
 // Users is the resolver for the users field.
 func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
 	r.Resolver.Service.Print()
+	preloads := GetPreloads(ctx)
+	fmt.Println(preloads)
 	return r.users, nil
 }
 
@@ -77,3 +88,28 @@ func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+
+func GetPreloads(ctx context.Context) []string {
+	return GetNestedPreloads(
+		graphql.GetOperationContext(ctx),
+		graphql.CollectFieldsCtx(ctx, nil),
+		"",
+	)
+}
+
+func GetNestedPreloads(ctx *graphql.OperationContext, fields []graphql.CollectedField, prefix string) (preloads []string) {
+
+	for _, column := range fields {
+		prefixColumn := GetPreloadString(prefix, column.Name)
+		preloads = append(preloads, prefixColumn)
+		preloads = append(preloads, GetNestedPreloads(ctx, graphql.CollectFields(ctx, column.Selections, nil), prefixColumn)...)
+	}
+	return
+}
+
+func GetPreloadString(prefix, name string) string {
+	if len(prefix) > 0 {
+		return prefix + "." + name
+	}
+	return name
+}
