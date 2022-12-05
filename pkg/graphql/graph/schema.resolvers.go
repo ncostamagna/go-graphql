@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/ncostamagna/go-graphql/pkg/graphql/graph/model"
+	"github.com/ncostamagna/go-graphql/internal/model"
 )
 
 // CreateTodo is the resolver for the createTodo field.

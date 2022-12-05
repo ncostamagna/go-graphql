@@ -1,8 +1,8 @@
 package graph
 
 import (
-	"github.com/ncostamagna/go-graphql/internal"
-	"github.com/ncostamagna/go-graphql/pkg/graphql/graph/model"
+	"github.com/ncostamagna/go-graphql/internal/model"
+	"github.com/ncostamagna/go-graphql/internal/users"
 )
 
 // This file will not be regenerated automatically.
@@ -12,5 +12,5 @@ import (
 type Resolver struct {
 	todos   []*model.Todo
 	users   []*model.User
-	Service internal.Service
+	Service users.Service
 }

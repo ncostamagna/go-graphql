@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/ncostamagna/go-graphql/internal"
+	"github.com/ncostamagna/go-graphql/internal/users"
 	tools "github.com/ncostamagna/go-graphql/pkg/graphql"
 )
 
@@ -18,7 +18,7 @@ func main() {
 		port = defaultPort
 	}
 
-	service := internal.Service{}
+	service := users.Service{}
 	srv := tools.NewServer(service)
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
