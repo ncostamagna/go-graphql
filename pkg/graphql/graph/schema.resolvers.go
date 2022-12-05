@@ -16,6 +16,7 @@ import (
 
 // CreateTodo is the resolver for the createTodo field.
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
+	r.Resolver.Service.Print()
 	rand, _ := rand.Int(rand.Reader, big.NewInt(100))
 
 	var user *model.User
@@ -40,6 +41,7 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 
 // CreateUser is the resolver for the createUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*model.User, error) {
+	r.Resolver.Service.Print()
 	rand, _ := rand.Int(rand.Reader, big.NewInt(100))
 	user := &model.User{
 		Name:  input.Name,
@@ -50,13 +52,20 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) 
 	return user, nil
 }
 
+// StoreUser is the resolver for the storeUser field.
+func (r *mutationResolver) StoreUser(ctx context.Context, input model.NewUser) (*model.User, error) {
+	panic(fmt.Errorf("not implemented: StoreUser - storeUser"))
+}
+
 // Todos is the resolver for the todos field.
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
+	r.Resolver.Service.Print()
 	return r.todos, nil
 }
 
 // Users is the resolver for the users field.
 func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
+	r.Resolver.Service.Print()
 	return r.users, nil
 }
 

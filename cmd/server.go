@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/ncostamagna/gokit-graphql/pkg/graphql/graph"
+	"github.com/ncostamagna/gokit-graphql/internal"
+	tools "github.com/ncostamagna/gokit-graphql/pkg/graphql"
 )
 
 const defaultPort = "8080"
@@ -18,7 +18,8 @@ func main() {
 		port = defaultPort
 	}
 
-	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
+	service := internal.Service{}
+	srv := tools.NewServer(service)
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
