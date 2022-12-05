@@ -1,4 +1,4 @@
-module github.com/ncostamagna/gokit-graphql
+module github.com/ncostamagna/go-graphql
 
 go 1.19
 

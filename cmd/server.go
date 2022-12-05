@@ -6,8 +6,8 @@ import (
 	"os"
 
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/ncostamagna/gokit-graphql/internal"
-	tools "github.com/ncostamagna/gokit-graphql/pkg/graphql"
+	"github.com/ncostamagna/go-graphql/internal"
+	tools "github.com/ncostamagna/go-graphql/pkg/graphql"
 )
 
 const defaultPort = "8080"
