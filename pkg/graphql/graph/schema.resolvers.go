@@ -6,18 +6,50 @@ package graph
 
 import (
 	"context"
-	"crypto/rand"
-	"errors"
 	"fmt"
-	"math/big"
-	"strings"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/ncostamagna/go-graphql/internal/model"
 )
 
-// CreateTodo is the resolver for the createTodo field.
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
+// CreateAddress is the resolver for the createAddress field.
+func (r *mutationResolver) CreateAddress(ctx context.Context, input model.NewAddress) (*model.Address, error) {
+	panic(fmt.Errorf("not implemented: CreateAddress - createAddress"))
+}
+
+// CreateUser is the resolver for the createUser field.
+func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*model.User, error) {
+	return r.Resolver.UserControl.Store(ctx, input)
+}
+
+// Addresses is the resolver for the addresses field.
+func (r *queryResolver) Addresses(ctx context.Context) ([]*model.Address, error) {
+	panic(fmt.Errorf("not implemented: Addresses - addresses"))
+}
+
+// Users is the resolver for the users field.
+func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
+	preloads := GetPreloads(ctx)
+	fmt.Println(preloads)
+	return r.Resolver.UserControl.GetAll(ctx)
+}
+
+// Mutation returns MutationResolver implementation.
+func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
+
+// Query returns QueryResolver implementation.
+func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
+
+type mutationResolver struct{ *Resolver }
+type queryResolver struct{ *Resolver }
+
+// !!! WARNING !!!
+// The code below was going to be deleted when updating resolvers. It has been copied here so you have
+// one last chance to move it out of harms way if you want. There are two reasons this happens:
+//   - When renaming or deleting a resolver the old code will be put in here. You can safely delete
+//     it when you're done.
+//   - You have helper methods in this file. Move them out to keep these resolver files clean.
+/* func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
 	r.Resolver.Service.Print()
 	rand, _ := rand.Int(rand.Reader, big.NewInt(100))
 
@@ -40,26 +72,9 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 	r.todos = append(r.todos, todo)
 	return todo, nil
 }
-
-// CreateUser is the resolver for the createUser field.
-func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*model.User, error) {
-	r.Resolver.Service.Print()
-	rand, _ := rand.Int(rand.Reader, big.NewInt(100))
-	user := &model.User{
-		Name:  input.Name,
-		ID:    fmt.Sprintf("T%d", rand),
-		Email: input.Email,
-	}
-	r.users = append(r.users, user)
-	return user, nil
-}
-
-// StoreUser is the resolver for the storeUser field.
 func (r *mutationResolver) StoreUser(ctx context.Context, input model.NewUser) (*model.User, error) {
 	panic(fmt.Errorf("not implemented: StoreUser - storeUser"))
 }
-
-// Todos is the resolver for the todos field.
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
 	r.Resolver.Service.Print()
 	preloads := GetPreloads(ctx)
@@ -70,25 +85,7 @@ func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
 		}
 	}
 	return r.todos, nil
-}
-
-// Users is the resolver for the users field.
-func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
-	r.Resolver.Service.Print()
-	preloads := GetPreloads(ctx)
-	fmt.Println(preloads)
-	return r.users, nil
-}
-
-// Mutation returns MutationResolver implementation.
-func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
-
-// Query returns QueryResolver implementation.
-func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
-
-type mutationResolver struct{ *Resolver }
-type queryResolver struct{ *Resolver }
-
+}*/
 func GetPreloads(ctx context.Context) []string {
 	return GetNestedPreloads(
 		graphql.GetOperationContext(ctx),
@@ -96,7 +93,6 @@ func GetPreloads(ctx context.Context) []string {
 		"",
 	)
 }
-
 func GetNestedPreloads(ctx *graphql.OperationContext, fields []graphql.CollectedField, prefix string) (preloads []string) {
 
 	for _, column := range fields {
@@ -106,7 +102,6 @@ func GetNestedPreloads(ctx *graphql.OperationContext, fields []graphql.Collected
 	}
 	return
 }
-
 func GetPreloadString(prefix, name string) string {
 	if len(prefix) > 0 {
 		return prefix + "." + name

@@ -1,7 +1,5 @@
 # Example
 
-For the time being
-
 ```sh
 cd pkg/graphql
 go run go run server.go
@@ -42,6 +40,9 @@ mutation createTodo {
 }
 ```
 
+# Update Schema
 
-todo:
- - add gokit in the project
+```sh
+cd pkg/graphql
+go run github.com/99designs/gqlgen generate
+```

@@ -6,8 +6,8 @@ import (
 	"github.com/ncostamagna/go-graphql/pkg/graphql/graph"
 )
 
-func NewServer(srv users.Service) *handler.Server {
+func NewTransport(ctl users.Controller) *handler.Server {
 	return handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
-		Service: srv,
+		UserControl: ctl,
 	}}))
 }

@@ -18,11 +18,15 @@ func main() {
 		port = defaultPort
 	}
 
-	service := users.Service{}
-	srv := tools.NewServer(service)
+	db := users.DB{}
+	usrRepo := users.NewRepo(db)
+	usrSrv := users.NewService(usrRepo)
+	usrCtl := users.NewController(usrSrv)
+
+	handler := tools.NewTransport(usrCtl)
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	http.Handle("/query", srv)
+	http.Handle("/query", handler)
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))

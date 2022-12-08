@@ -2,27 +2,30 @@
 
 package model
 
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
+type Address struct {
+	ID      string `json:"id"`
+	Country string `json:"country"`
+	State   string `json:"state"`
+	Street  string `json:"street"`
+}
+
+type NewAddress struct {
+	Country string `json:"country"`
+	State   string `json:"state"`
+	Street  string `json:"street"`
 }
 
 type NewUser struct {
-	Name  string `json:"name"`
-	Email string `json:"email"`
-	Phone string `json:"phone"`
-}
-
-type Todo struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
-	Done bool   `json:"done"`
-	User *User  `json:"user"`
+	Name      string `json:"name"`
+	Email     string `json:"email"`
+	Phone     string `json:"phone"`
+	AddressID string `json:"addressId"`
 }
 
 type User struct {
-	ID    string `json:"id"`
-	Name  string `json:"name"`
-	Email string `json:"email"`
-	Phone string `json:"phone"`
+	ID      string   `json:"id"`
+	Name    string   `json:"name"`
+	Email   string   `json:"email"`
+	Phone   string   `json:"phone"`
+	Address *Address `json:"address"`
 }

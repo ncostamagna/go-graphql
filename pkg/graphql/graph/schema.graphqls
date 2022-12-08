@@ -2,11 +2,12 @@
 #
 # https://gqlgen.com/getting-started/
 
-type Todo {
+
+type Address {
   id: ID!
-  text: String!
-  done: Boolean!
-  user: User!
+  country: String!
+  state: String!
+  street: String!
 }
 
 type User {
@@ -14,26 +15,28 @@ type User {
   name: String!
   email: String!
   phone: String!
+  address: Address!
 }
 
 type Query {
-  todos: [Todo!]!
+  addresses: [Address!]!
   users: [User!]!
 }
 
-input NewTodo {
-  text: String!
-  userId: String!
+input NewAddress {
+  country: String!
+  state: String!
+  street: String!
 }
 
 input NewUser {
   name: String!
   email: String!
   phone: String!
+  addressId: String!
 }
 
 type Mutation {
-  createTodo(input: NewTodo!): Todo!
+  createAddress(input: NewAddress!): Address!
   createUser(input: NewUser!): User!
-  storeUser(input: NewUser!): User!
 }
