@@ -1,8 +1,20 @@
+# Project
+go project with grapqh
+```
+cmd
+   ---> server: main program
+internal
+  |---> model: model of service examlple users, course, etc
+   ---> users: internal service of users (endpont, service, repository)
+pkg
+   ---> graphql: graphql packages and configurations
+```
+
 # Example
 
 ```sh
 cd pkg/graphql
-go run go run server.go
+go run server.go
 ```
 
 ```graphql
@@ -11,7 +23,7 @@ POST method
 
 # create User
 mutation createUser {
-  createUser(input: { name: "Nahuel", email: "nlcostamagna@gmail.com" }) {
+  createUser(input: { name: "Nahuel", email: "nlcostamagna@gmail.com", phone: "12212312", addressId: "123" }) {
 		id
     name
 		email
@@ -27,17 +39,6 @@ query findUsers {
   }
 }
 
-# create Todo
-mutation createTodo {
-  createTodo(input: { text: "todo", userId: "T45" }) {
-    user {
-      id
-			name
-    }
-    text
-    done
-  }
-}
 ```
 
 # Update Schema
